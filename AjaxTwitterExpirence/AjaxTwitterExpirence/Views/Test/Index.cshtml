@@ -1,0 +1,55 @@
+﻿@model IEnumerable<TweetSharp.TwitterStatus> 
+@{
+    ViewBag.Title = "Index";
+}
+<script type="text/javascript">
+    function Show(el) {
+        var title = el.value;
+        var count = '10';
+        $.ajax({
+            type: "POST",
+            url: "/Test/New",
+            data: "title=" + title + "&count=" + count,
+            dataType: "html",
+            success: function (result) {
+                var domElement = $(result);
+                $('#items_list').empty();
+                $('#items_list').append(domElement);
+                $('#item_title').val(title);
+                $('#item_count').val(count);
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+    function AddItem(title, reset) {
+        if (reset == '1') {
+            $('#item_count').val('10');
+            count = $('#item_count').val();
+        }
+        if (reset == '0') {
+            count = (parseInt(count) + 10).toString();
+        }
+          $.ajax({
+              type: "POST",
+              url: "/Test/New",
+              data: "title=" + title + "&count=" + count,
+              dataType: "html",
+              success: function (result)
+              {
+                  var domElement = $(result);
+                  $('#items_list').empty();
+                  $('#items_list').append(domElement);
+                  $('#item_title').val(title);
+                  $('#item_count').val(count);
+              }  
+        });
+      }
+</script>
+Автор:
+<br />
+<input type="text" id="item_title" />
+<input type="hidden" id="item_count" value="10" />
+<input type="button" onclick="AddItem($('#item_title').val(),'1')" value="Показать 10 твитов автора" />
+<div id="items_list">
+</div>

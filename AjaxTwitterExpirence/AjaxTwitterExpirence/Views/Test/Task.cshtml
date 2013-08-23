@@ -1,0 +1,17 @@
+﻿@model IEnumerable<TweetSharp.TwitterStatus>
+<div class="task" style="float:left">
+
+@foreach (var p in Model)
+{
+     @Html.DisplayFor(modelItem => p.Text)
+     <hr />
+}
+<input type="button" onclick="AddItem($('#item_title').val(), '0')" value="Ещё 10 твитов" />
+</div>
+<div style="float:left">
+<h2>Вы так же читали</h2>
+@foreach (var k in ViewBag.List)
+{
+     <input id="@k.Id"type="button" onclick="Show(this)" value="@k.Name" />
+}
+</div>

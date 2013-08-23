@@ -1,0 +1,41 @@
+﻿@model IEnumerable<TweetSharp.TwitterStatus>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+@{
+    ViewBag.Title = "Index";
+}
+<div class="left">
+@using (Html.BeginForm("Index", "Home", FormMethod.Get, new { enctype = "multipart/form-data" }))
+{
+     <input type="text" id="name" name="name" placeholder="Conference" required=""/>
+     <input type="submit" value="Показать твиты"/>
+}
+@if (Model!=null){
+foreach (var item in Model) {
+       @Html.DisplayFor(modelItem => item.Text)
+       <br />
+}
+using (Html.BeginForm("Index", "Home",FormMethod.Get)) 
+{
+     <input type="submit" value="Ещё 10 твитов"/>
+     <input type="hidden" name="scount" value="@(Model.Count()+10)" />
+     <input type="hidden" name="name" value="@ViewBag.Name" />
+}
+}
+</div>
+<div class="right">
+ <h3>Так же вы смотрели</h3>
+  @if (ViewBag.List!=null)
+  {
+  foreach (var p in ViewBag.List)
+  {
+      @Ajax.ActionLink((string)p.Name, "Index", new { scount = p.Count, name = p.Name }, new AjaxOptions { HttpMethod = "get", UpdateTargetId = "target" })
+      <br />
+  }
+  }
+</div>
+ 
+<div style="clear:both"></div>
+<p id="target"></p>
+
+
